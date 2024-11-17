@@ -1,9 +1,10 @@
 const webpack = require("webpack");
-path = require("path");
+const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { GenerateSW } = require("workbox-webpack-plugin");
 
 module.exports = {
   entry: "./src/client/index.js",
@@ -42,6 +43,23 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: "style.[contenthash].css",
+    }),
+    new GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: ({ request }) => request.destination === "image",
+          handler: "CacheFirst",
+          options: {
+            cacheName: "images",
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            },
+          },
+        },
+      ],
     }),
   ],
   optimization: {
