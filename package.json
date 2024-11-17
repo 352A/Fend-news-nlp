@@ -7,7 +7,8 @@
     "test": "jest",
     "start": "nodemon ./src/server/index.js",
     "dev": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build-prod": "webpack --config webpack.prod.js",
+    "build-dev": "webpack --config webpack.dev.js"
   },
   "author": "",
   "license": "ISC",
